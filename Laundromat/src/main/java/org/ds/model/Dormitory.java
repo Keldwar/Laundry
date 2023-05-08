@@ -1,44 +1,73 @@
 package org.ds.model;
 
+import jakarta.persistence.*;
 import org.ds.model.machine.WashingMachine;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+@Entity
+@Table(name = "dormitories")
 public class Dormitory {
-    private final Long id;
-    private final Map<Long, WashingMachine> machines;
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long id;
 
-    public Dormitory(Long id, Map<Long, WashingMachine> machines) {
+    @Column(name = "name")
+    private String name;
+
+    @OneToMany(mappedBy = "dormitory", fetch = FetchType.EAGER)
+    private List<WashingMachine> machines;
+
+    public Dormitory(Long id, String name, List<WashingMachine> machines) {
         this.id = id;
+        this.name = name;
         this.machines = machines;
     }
 
-    public Dormitory(Long id) {
-        this.id = id;
-        this.machines = new HashMap<>();
+    public Dormitory() {
     }
+
     public Long getId() {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public List<WashingMachine> getMachines() {
-        return new ArrayList<WashingMachine>(this.machines.values());
-    }
-    public WashingMachine getMachine(Long id) {
-        return this.machines.get(id);
+        return machines;
     }
 
-    public void setMachine(WashingMachine washingMachine) {
-        this.machines.put(washingMachine.getId(), washingMachine);
+    public void setMachines(List<WashingMachine> machines) {
+        this.machines = machines;
     }
 
-    public void addMachine(WashingMachine machine) {
-        this.machines.put(machine.getId(), machine);
+    public WashingMachine getWashingMachineById(Long machineId) {
+        return machines.stream()
+                .filter(washingMachine -> washingMachine.getId().equals(machineId))
+                .findFirst()
+                .get();
     }
-    public WashingMachine removeMachine(Long id) {
-        return this.machines.remove(id);
+
+    public void addWashingMachine(WashingMachine washingMachine) {
+        machines.add(washingMachine);
+    }
+
+    public boolean removeWashingMachine(WashingMachine washingMachine) {
+        return machines.remove(washingMachine);
+    }
+
+    public boolean removeWashingMachine(Long dormitoryId, Long machineId) {
+        return machines.removeIf(washingMachine -> washingMachine.getId().equals(machineId));
     }
 }

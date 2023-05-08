@@ -1,19 +1,44 @@
 package org.ds.model.machine;
 
-import java.util.Calendar;
+import jakarta.persistence.*;
+import org.ds.model.Dormitory;
+
 import java.util.GregorianCalendar;
 
+@Entity
+@Table(name = "machines")
 public class WashingMachine {
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
+    @Column(name = "state")
     private State state;
-    private Calendar calendar;
+    @Column(name = "lastTime")
+    private Long time;
+    @Column(name = "duration")
     private Long duration;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "dormitory_id")
+    private Dormitory dormitory;
 
-    public WashingMachine(Long id, State state, Calendar calendar, Long duration) {
+    public WashingMachine(Long id, State state, Long time, Long duration) {
         this.id = id;
         this.state = state;
-        this.calendar = calendar;
+        this.time = time;
         this.duration = duration;
+    }
+
+    public WashingMachine() {
+
+    }
+
+    public Dormitory getDormitory() {
+        return dormitory;
+    }
+
+    public void setDormitory(Dormitory dormitory) {
+        this.dormitory = dormitory;
     }
 
     public Long getId() {
@@ -32,12 +57,12 @@ public class WashingMachine {
         this.state = state;
     }
 
-    public Calendar getCalendar() {
-        return calendar;
+    public Long getTime() {
+        return time;
     }
 
-    public void setCalendar(Calendar calendar) {
-        this.calendar = calendar;
+    public void setTime(Long time) {
+        this.time = time;
     }
 
     public Long getDuration() {
@@ -47,8 +72,9 @@ public class WashingMachine {
     public void setDuration(Long duration) {
         this.duration = duration;
     }
+
     public boolean isFinish() {
         return new GregorianCalendar().getTime().getTime() -
-                calendar.getTime().getTime() >= duration * 1000 || state == State.FREE;
+                time >= duration * 1000 || state == State.FREE;
     }
 }

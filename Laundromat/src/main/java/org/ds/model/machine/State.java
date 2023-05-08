@@ -5,7 +5,7 @@ public enum State {
     BUSY,
     BROKEN;
 
-    public static State getState(int i) {
+    public static State getState(int i) { // убрать
         return switch (i) {
             case 0 -> State.FREE;
             case 1 -> State.BUSY;
