@@ -18,7 +18,7 @@ public class WashingMachineServiceImpl implements WashingMachineService {
 
     @Override
     public WashingMachine addWashingMachine(WashingMachine washingMachine) {
-        return washingMachineRepository.saveAndFlush(washingMachine);
+        return washingMachineRepository.save(washingMachine);
     }
 
     @Override

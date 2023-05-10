@@ -16,7 +16,8 @@ public class Dormitory {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "dormitory", fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "dormitory_id")
     private List<WashingMachine> machines;
 
     public Dormitory(Long id, String name, List<WashingMachine> machines) {

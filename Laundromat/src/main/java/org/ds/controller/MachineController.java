@@ -68,7 +68,7 @@ public class MachineController {
         dormitoryService.delete(dormitoryId);
 
         return new ResponseEntity<>(HttpStatus.OK);
-               // : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+        // : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
 
     @DeleteMapping("/dormitory/{dormitoryId}/machine/{machineId}")

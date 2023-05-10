@@ -5,18 +5,21 @@ import org.ds.model.Dormitory;
 import org.ds.model.machine.WashingMachine;
 import org.ds.repository.DormitoryRepository;
 import org.ds.service.DormitoryService;
+import org.ds.service.WashingMachineService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class DormitoryServiceImpl implements DormitoryService {
-    private final Generator generator;
     private final DormitoryRepository dormitoryRepository;
+    private final WashingMachineService washingMachineService;
 
-    public DormitoryServiceImpl(DormitoryRepository dormitoryRepository) {
-        this.generator = new Generator(dormitoryRepository);
+    public DormitoryServiceImpl(DormitoryRepository dormitoryRepository, WashingMachineService washingMachineService) {
+        Generator generator = new Generator(dormitoryRepository);
+        generator.run();
         this.dormitoryRepository = dormitoryRepository;
+        this.washingMachineService = washingMachineService;
     }
 
     @Override
@@ -46,12 +49,10 @@ public class DormitoryServiceImpl implements DormitoryService {
 
     @Override
     public void addWashingMachine(Long dormitoryId, WashingMachine washingMachine) {
-        System.out.println(dormitoryRepository.getReferenceById(dormitoryId));
-        //dormitoryRepository.getReferenceById(dormitoryId).addWashingMachine(washingMachine);
 
-        Dormitory dormitory = dormitoryRepository.getReferenceById(dormitoryId);
+        Dormitory dormitory = getById(dormitoryId);
         dormitory.addWashingMachine(washingMachine);
-        dormitoryRepository.saveAndFlush(dormitory);
+        dormitoryRepository.save(dormitory);
     }
 
     @Override

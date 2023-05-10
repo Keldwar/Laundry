@@ -16,8 +16,16 @@ public class Generator {
     public Generator(DormitoryRepository dormitoryRepository) {
         this.dormitoryRepository = dormitoryRepository;
         dormitoryRepository.saveAndFlush(new Dormitory(1L, "First dormitory", new ArrayList<>()));
+    }
 
-        /*Timer timer = new Timer("State generation");
+    private void generateState(WashingMachine washingMachine) {
+        washingMachine.setTime(new Random().nextLong());
+        washingMachine.setState(State.getState(new Random().nextInt(3)));
+        washingMachine.setDuration(new Random().nextLong(60));
+    }
+
+    public void run() {
+        Timer timer = new Timer("State generation");
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -25,8 +33,7 @@ public class Generator {
                 for (Dormitory dormitory : Generator.this.dormitoryRepository.findAll()) {
                     for (WashingMachine washingMachine : dormitory.getMachines()) {
                         if (washingMachine.isFinish()) {
-                            System.out.println(dormitory.getId() + " " + washingMachine.getId() + " "
-                            + washingMachine.getTime() + " " + washingMachine.getDuration());
+                            System.out.println(dormitory.getId() + " " + washingMachine.getId() + " " + washingMachine.getTime() + " " + washingMachine.getDuration());
                             generateState(washingMachine);
                             flag = true;
                         }
@@ -36,16 +43,6 @@ public class Generator {
                     System.out.println();
                 }
             }
-        }, 10, 50);*/
-    }
-
-    public DormitoryRepository getDormitoryRepository() {
-        return dormitoryRepository;
-    }
-
-    private void generateState(WashingMachine washingMachine) {
-        washingMachine.setTime(new Random().nextLong());
-        washingMachine.setState(State.getState(new Random().nextInt(3)));
-        washingMachine.setDuration(new Random().nextLong(60));
+        }, 10, 50);
     }
 }
