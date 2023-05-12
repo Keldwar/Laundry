@@ -8,9 +8,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-
+/**
+ * Сервис для работы с объектами WashingMachine
+ */
 @Service
 public class WashingMachineServiceImpl implements WashingMachineService {
+    /**
+     * Хранилище объектов
+     */
     private final WashingMachineRepository washingMachineRepository;
 
     public WashingMachineServiceImpl(WashingMachineRepository washingMachineRepository) {

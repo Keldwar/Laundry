@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
+/**
+ * Контроллер, в котором реализована логика работы запросов
+ */
 @RestController
 public class MachineController {
     private final DormitoryServiceImpl dormitoryService;
@@ -53,9 +56,10 @@ public class MachineController {
 
     @PostMapping("/dormitory")
     public ResponseEntity<?> create(@RequestBody Dormitory dormitory) {
-        dormitoryService.addDormitory(dormitory);
+        Optional<Dormitory> optionalDormitory = dormitoryService.addDormitory(dormitory);
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return optionalDormitory.map(dormitory1 -> new ResponseEntity<>(HttpStatus.CREATED))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_MODIFIED));
     }
 
     @PutMapping("/machines")

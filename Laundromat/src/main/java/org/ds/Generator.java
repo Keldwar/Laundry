@@ -6,6 +6,9 @@ import org.ds.repository.WashingMachineRepository;
 
 import java.util.*;
 
+/**
+ * Генератор состояний стиральных машинок
+ */
 public class Generator {
     private final WashingMachineRepository washingMachineRepository;
 

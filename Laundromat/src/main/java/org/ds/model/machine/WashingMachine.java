@@ -4,6 +4,11 @@ import jakarta.persistence.*;
 
 import java.util.Date;
 
+/**
+ * Класс Стиральная машинка - хранит в себе информацию о конкретной машинке.
+ * Хранится в базе данных таблицей machines.
+ * Сущность зависит от общаги.
+ */
 @Entity
 @Table(name = "machines")
 public class WashingMachine {

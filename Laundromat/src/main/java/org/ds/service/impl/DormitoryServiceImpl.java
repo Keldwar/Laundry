@@ -8,8 +8,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+/**
+ * Сервис для работы с объектами Dormitory
+ */
 @Service
 public class DormitoryServiceImpl implements DormitoryService {
+    /**
+     * Хранилище объектов
+     */
     private final DormitoryRepository dormitoryRepository;
 
     public DormitoryServiceImpl(DormitoryRepository dormitoryRepository) {

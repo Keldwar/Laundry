@@ -5,6 +5,10 @@ import org.ds.model.machine.WashingMachine;
 
 import java.util.*;
 
+/**
+ * Класс Общага - хранит инфомарцию о общаге и стиральных машинах в общаге.
+ * Хранится в базе данных таблице dormitories.
+ */
 @Entity
 @Table(name = "dormitories")
 public class Dormitory {
@@ -19,12 +23,6 @@ public class Dormitory {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "dormitory_id")
     private List<WashingMachine> machines;
-
-    public Dormitory(Long id, String name, List<WashingMachine> machines) {
-        this.id = id;
-        this.name = name;
-        this.machines = machines;
-    }
 
     public Dormitory() {
     }
