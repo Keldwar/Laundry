@@ -2,7 +2,7 @@ package org.ds.model.machine;
 
 import jakarta.persistence.*;
 
-import java.util.GregorianCalendar;
+import java.util.Date;
 
 @Entity
 @Table(name = "machines")
@@ -17,11 +17,9 @@ public class WashingMachine {
     @Column(name = "duration")
     private Long duration;
 
-
     public WashingMachine() {
 
     }
-
 
     public Long getId() {
         return id;
@@ -56,7 +54,7 @@ public class WashingMachine {
     }
 
     public boolean isFinish() {
-        return new GregorianCalendar().getTime().getTime() -
+        return new Date().getTime() -
                 time >= duration * 1000 || state == State.FREE;
     }
 }

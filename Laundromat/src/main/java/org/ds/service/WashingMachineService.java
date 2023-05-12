@@ -2,12 +2,14 @@ package org.ds.service;
 
 import org.ds.model.machine.WashingMachine;
 
-import java.util.List;
+import java.util.Optional;
 
 public interface WashingMachineService {
-    WashingMachine addWashingMachine(WashingMachine washingMachine);
     void delete(Long id);
-    WashingMachine getById(Long id);
-    WashingMachine update(WashingMachine washingMachine);
-    List<WashingMachine> getAll();
+
+    Optional<WashingMachine> getById(Long id);
+
+    Optional<WashingMachine> update(WashingMachine washingMachine);
+
+    Optional<Iterable<WashingMachine>> getAll();
 }

@@ -1,11 +1,12 @@
 package org.ds.service.impl;
 
+import org.ds.Generator;
 import org.ds.model.machine.WashingMachine;
 import org.ds.repository.WashingMachineRepository;
 import org.ds.service.WashingMachineService;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -13,12 +14,9 @@ public class WashingMachineServiceImpl implements WashingMachineService {
     private final WashingMachineRepository washingMachineRepository;
 
     public WashingMachineServiceImpl(WashingMachineRepository washingMachineRepository) {
+        Generator generator = new Generator(washingMachineRepository);
+        generator.run();
         this.washingMachineRepository = washingMachineRepository;
-    }
-
-    @Override
-    public WashingMachine addWashingMachine(WashingMachine washingMachine) {
-        return washingMachineRepository.save(washingMachine);
     }
 
     @Override
@@ -27,17 +25,17 @@ public class WashingMachineServiceImpl implements WashingMachineService {
     }
 
     @Override
-    public WashingMachine getById(Long id) {
-        return washingMachineRepository.getReferenceById(id);
+    public Optional<WashingMachine> getById(Long id) {
+        return washingMachineRepository.findById(id);
     }
 
     @Override
-    public WashingMachine update(WashingMachine washingMachine) {
-        return washingMachineRepository.saveAndFlush(washingMachine);
+    public Optional<WashingMachine> update(WashingMachine washingMachine) {
+        return Optional.of(washingMachineRepository.save(washingMachine));
     }
 
     @Override
-    public List<WashingMachine> getAll() {
-        return washingMachineRepository.findAll();
+    public Optional<Iterable<WashingMachine>> getAll() {
+        return Optional.of(washingMachineRepository.findAll());
     }
 }

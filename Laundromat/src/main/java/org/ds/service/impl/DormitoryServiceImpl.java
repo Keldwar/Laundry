@@ -1,30 +1,24 @@
 package org.ds.service.impl;
 
-import org.ds.Generator;
 import org.ds.model.Dormitory;
 import org.ds.model.machine.WashingMachine;
 import org.ds.repository.DormitoryRepository;
 import org.ds.service.DormitoryService;
-import org.ds.service.WashingMachineService;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DormitoryServiceImpl implements DormitoryService {
     private final DormitoryRepository dormitoryRepository;
-    private final WashingMachineService washingMachineService;
 
-    public DormitoryServiceImpl(DormitoryRepository dormitoryRepository, WashingMachineService washingMachineService) {
-        Generator generator = new Generator(dormitoryRepository);
-        generator.run();
+    public DormitoryServiceImpl(DormitoryRepository dormitoryRepository) {
         this.dormitoryRepository = dormitoryRepository;
-        this.washingMachineService = washingMachineService;
     }
 
     @Override
-    public Dormitory addDormitory(Dormitory dormitory) {
-        return dormitoryRepository.saveAndFlush(dormitory);
+    public Optional<Dormitory> addDormitory(Dormitory dormitory) {
+        return Optional.of(dormitoryRepository.save(dormitory));
     }
 
     @Override
@@ -33,40 +27,27 @@ public class DormitoryServiceImpl implements DormitoryService {
     }
 
     @Override
-    public Dormitory getById(Long id) {
-        return dormitoryRepository.getReferenceById(id);
+    public Optional<Dormitory> getById(Long id) {
+        return dormitoryRepository.findById(id);
     }
 
     @Override
-    public Dormitory update(Dormitory dormitory) {
-        return dormitoryRepository.saveAndFlush(dormitory);
+    public Optional<Dormitory> update(Dormitory dormitory) {
+        return Optional.of(dormitoryRepository.save(dormitory));
     }
 
     @Override
-    public List<Dormitory> getAll() {
-        return dormitoryRepository.findAll();
+    public Optional<Iterable<Dormitory>> getAll() {
+        return Optional.of(dormitoryRepository.findAll());
     }
 
     @Override
     public void addWashingMachine(Long dormitoryId, WashingMachine washingMachine) {
-
-        Dormitory dormitory = getById(dormitoryId);
-        dormitory.addWashingMachine(washingMachine);
-        dormitoryRepository.save(dormitory);
-    }
-
-    @Override
-    public boolean deleteWashingMachine(Long dormitoryId, WashingMachine washingMachine) {
-        return dormitoryRepository.getReferenceById(dormitoryId).removeWashingMachine(washingMachine);
-    }
-
-    @Override
-    public boolean deleteWashingMachine(Long dormitoryId, Long machineId) {
-        return dormitoryRepository.getReferenceById(dormitoryId).removeWashingMachine(dormitoryId, machineId);
-    }
-
-    @Override
-    public boolean updateWashingMachine(Long dormitoryId, WashingMachine washingMachine) {
-        return false;
+        Optional<Dormitory> optionalDormitory = getById(dormitoryId);
+        if (optionalDormitory.isPresent()) {
+            Dormitory dormitory = optionalDormitory.get();
+            dormitory.addWashingMachine(washingMachine);
+            dormitoryRepository.save(dormitory);
+        }
     }
 }

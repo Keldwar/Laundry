@@ -53,22 +53,7 @@ public class Dormitory {
         this.machines = machines;
     }
 
-    public WashingMachine getWashingMachineById(Long machineId) {
-        return machines.stream()
-                .filter(washingMachine -> washingMachine.getId().equals(machineId))
-                .findFirst()
-                .get();
-    }
-
     public void addWashingMachine(WashingMachine washingMachine) {
         machines.add(washingMachine);
-    }
-
-    public boolean removeWashingMachine(WashingMachine washingMachine) {
-        return machines.remove(washingMachine);
-    }
-
-    public boolean removeWashingMachine(Long dormitoryId, Long machineId) {
-        return machines.removeIf(washingMachine -> washingMachine.getId().equals(machineId));
     }
 }
