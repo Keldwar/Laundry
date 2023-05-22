@@ -2,12 +2,13 @@ package org.ds.controller;
 
 import org.ds.model.Dormitory;
 import org.ds.model.machine.WashingMachine;
+import org.ds.service.DormitoryService;
 import org.ds.service.WashingMachineService;
-import org.ds.service.impl.DormitoryServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -15,17 +16,17 @@ import java.util.Optional;
  */
 @RestController
 public class MachineController {
-    private final DormitoryServiceImpl dormitoryService;
+    private final DormitoryService dormitoryService;
     private final WashingMachineService washingMachineService;
 
-    public MachineController(DormitoryServiceImpl dormitoryService, WashingMachineService washingMachineService) {
+    public MachineController(DormitoryService dormitoryService, WashingMachineService washingMachineService) {
         this.dormitoryService = dormitoryService;
         this.washingMachineService = washingMachineService;
     }
 
     @GetMapping("/dormitories")
-    public ResponseEntity<Iterable<Dormitory>> readAll() {
-        Optional<Iterable<Dormitory>> dormitories = dormitoryService.getAll();
+    public ResponseEntity<List<Dormitory>> readAll() {
+        Optional<List<Dormitory>> dormitories = dormitoryService.getAll();
 
         return dormitories.map(dormitoryList -> new ResponseEntity<>(dormitoryList, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -48,39 +49,45 @@ public class MachineController {
     }
 
     @PostMapping("/dormitory/{dormitoryId}/addMachine")
-    public ResponseEntity<?> create(@PathVariable Long dormitoryId, @RequestBody WashingMachine washingMachine) {
-        dormitoryService.addWashingMachine(dormitoryId, washingMachine);
+    public ResponseEntity<WashingMachine> create(@PathVariable Long dormitoryId, @RequestBody WashingMachine washingMachine) {
+        Optional<WashingMachine> optionalMachine = dormitoryService.addWashingMachine(dormitoryId, washingMachine);
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return optionalMachine.map(machine -> new ResponseEntity<>(machine, HttpStatus.CREATED))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
     @PostMapping("/dormitory")
-    public ResponseEntity<?> create(@RequestBody Dormitory dormitory) {
+    public ResponseEntity<Dormitory> create(@RequestBody Dormitory dormitory) {
+        if (dormitory.getName() == null || dormitory.getName().isEmpty()) {
+            System.out.println("Error");
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
         Optional<Dormitory> optionalDormitory = dormitoryService.addDormitory(dormitory);
 
-        return optionalDormitory.map(dormitory1 -> new ResponseEntity<>(HttpStatus.CREATED))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_MODIFIED));
+        return optionalDormitory.map(dormitory1 -> new ResponseEntity<>(dormitory1, HttpStatus.CREATED))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
-    @PutMapping("/machines")
-    public ResponseEntity<?> update(@RequestBody WashingMachine washingMachine) {
-        Optional<WashingMachine> optionalMachine = washingMachineService.update(washingMachine);
+    @PutMapping("/dormitory/{dormitoryId}/machine")
+    public ResponseEntity<WashingMachine> update(@PathVariable Long dormitoryId, @RequestBody WashingMachine washingMachine) {
+        Optional<WashingMachine> optionalMachine = dormitoryService.update(dormitoryId, washingMachine);
 
-        return optionalMachine.map(machine -> new ResponseEntity<>(HttpStatus.OK))
+        return optionalMachine.map(machine -> new ResponseEntity<>(machine, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_MODIFIED));
     }
 
     @DeleteMapping("/dormitory/{dormitoryId}")
     public ResponseEntity<?> deleteDormitory(@PathVariable Long dormitoryId) {
-        dormitoryService.delete(dormitoryId);
-
-        return new ResponseEntity<>(HttpStatus.OK);
+        return dormitoryService.delete(dormitoryId)
+                ? new ResponseEntity<>(HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @DeleteMapping("machine/{machineId}")
+    @DeleteMapping("/machine/{machineId}")
     public ResponseEntity<?> deleteMachine(@PathVariable Long machineId) {
-        washingMachineService.delete(machineId);
-
-        return new ResponseEntity<>(HttpStatus.OK);
+        return washingMachineService.delete(machineId)
+                ? new ResponseEntity<>(HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

@@ -6,6 +6,7 @@ import org.ds.repository.WashingMachineRepository;
 import org.ds.service.WashingMachineService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -25,8 +26,13 @@ public class WashingMachineServiceImpl implements WashingMachineService {
     }
 
     @Override
-    public void delete(Long id) {
-        washingMachineRepository.deleteById(id);
+    public boolean delete(Long id) {
+        Optional<WashingMachine> washingMachine = washingMachineRepository.findById(id);
+        if (washingMachine.isPresent()) {
+            washingMachineRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -36,11 +42,16 @@ public class WashingMachineServiceImpl implements WashingMachineService {
 
     @Override
     public Optional<WashingMachine> update(WashingMachine washingMachine) {
-        return Optional.of(washingMachineRepository.save(washingMachine));
+        Optional<WashingMachine> machine = washingMachineRepository.findById(washingMachine.getId());
+        if (machine.isPresent()) {
+            washingMachineRepository.deleteById(washingMachine.getId());
+            return Optional.of(washingMachineRepository.save(washingMachine));
+        }
+        return Optional.empty();
     }
 
     @Override
-    public Optional<Iterable<WashingMachine>> getAll() {
-        return Optional.of(washingMachineRepository.findAll());
+    public Optional<List<WashingMachine>> getAll() {
+        return Optional.of((List<WashingMachine>) washingMachineRepository.findAll());
     }
 }

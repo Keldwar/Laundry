@@ -26,6 +26,13 @@ public class WashingMachine {
 
     }
 
+    public WashingMachine(Long id, State state, Long time, Long duration) {
+        this.id = id;
+        this.state = state;
+        this.time = time;
+        this.duration = duration;
+    }
+
     public Long getId() {
         return id;
     }

@@ -3,6 +3,7 @@ package org.ds.service;
 import org.ds.model.Dormitory;
 import org.ds.model.machine.WashingMachine;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -10,46 +11,55 @@ import java.util.Optional;
  */
 public interface DormitoryService {
     /**
-     * добавление новой общаги в базу
+     * Добавление нового объекта Dormitory в базу
      *
-     * @param dormitory - общага
-     * @return объект общаги
+     * @param dormitory - Общежитие
+     * @return объект Общежитие
      */
     Optional<Dormitory> addDormitory(Dormitory dormitory);
-
     /**
-     * Удаление общаги из базы
+     * Удаление объекта Общежитие
      *
-     * @param id - идентификатор общаги
+     * @param id - идентификатор
+     * @return удалось удалить объект или нет
      */
-    void delete(Long id);
+    boolean delete(Long id);
 
     /**
      * Возвращает объект по идентификатору
      *
-     * @param id - идентификатор общаги
-     * @return объект общаги
+     * @param id - идентификатор
+     * @return объект Общежитие
      */
     Optional<Dormitory> getById(Long id);
 
     /**
      * Обновляет данные в базе
      *
-     * @param dormitory - объект общаги
-     * @return объект общаги
+     * @param dormitory - объект
+     * @return объект Общежитие
      */
     Optional<Dormitory> update(Dormitory dormitory);
 
     /**
-     * @return возвращает все общаги
+     * Обновление данных Стиральной машины
+     * @param dormitoryId - идентификатор Общежития
+     * @param washingMachine - объект Стиральной машины
+     * @return Стиральную машину, которую обновили
      */
-    Optional<Iterable<Dormitory>> getAll();
+    Optional<WashingMachine> update(Long dormitoryId, WashingMachine washingMachine);
+
+    /**
+     * @return возвращает все общежития
+     */
+    Optional<List<Dormitory>> getAll();
 
     /**
      * Добавляет объект машины в базу данных
      *
      * @param dormitoryId    - идентификатор общаги
      * @param washingMachine - объект стиральной машины
+     * @return машину, которую добавили
      */
-    void addWashingMachine(Long dormitoryId, WashingMachine washingMachine);
+    Optional<WashingMachine> addWashingMachine(Long dormitoryId, WashingMachine washingMachine);
 }

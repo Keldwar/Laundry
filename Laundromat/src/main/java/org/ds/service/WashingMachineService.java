@@ -2,6 +2,7 @@ package org.ds.service;
 
 import org.ds.model.machine.WashingMachine;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -12,19 +13,20 @@ public interface WashingMachineService {
      * Удаляет стиральную машину из базы данных
      *
      * @param id - идентификатор машины
+     * @return - удалось удалить объект или нет
      */
-    void delete(Long id);
+    boolean delete(Long id);
 
     /**
      * Возвращает объект по идентификатору
      *
      * @param id - идентификатору
-     * @return объект стиральную машину
+     * @return объект Стиральная машина
      */
     Optional<WashingMachine> getById(Long id);
 
     /**
-     * Обновляет данные машинки
+     * Обновляет данные стиральной машины
      *
      * @param washingMachine - объект стиральной машины
      * @return объект стиральной машины
@@ -34,5 +36,5 @@ public interface WashingMachineService {
     /**
      * @return объекты стиральных машинок
      */
-    Optional<Iterable<WashingMachine>> getAll();
+    Optional<List<WashingMachine>> getAll();
 }

@@ -1,6 +1,7 @@
 package org.ds.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import org.ds.model.machine.WashingMachine;
 
 import java.util.*;
@@ -18,6 +19,7 @@ public class Dormitory {
     private Long id;
 
     @Column(name = "name")
+    @NotNull
     private String name;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -25,6 +27,10 @@ public class Dormitory {
     private List<WashingMachine> machines;
 
     public Dormitory() {
+    }
+
+    public Dormitory(String name) {
+        this.name = name;
     }
 
     public Long getId() {
@@ -53,5 +59,9 @@ public class Dormitory {
 
     public void addWashingMachine(WashingMachine washingMachine) {
         machines.add(washingMachine);
+    }
+
+    public boolean removeMachine(Long id) {
+        return machines.removeIf(k -> k.getId().equals(id));
     }
 }

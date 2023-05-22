@@ -6,6 +6,7 @@ import org.ds.repository.DormitoryRepository;
 import org.ds.service.DormitoryService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -28,8 +29,13 @@ public class DormitoryServiceImpl implements DormitoryService {
     }
 
     @Override
-    public void delete(Long id) {
-        dormitoryRepository.deleteById(id);
+    public boolean delete(Long id) {
+        Optional<Dormitory> dormitory = dormitoryRepository.findById(id);
+        if (dormitory.isPresent()) {
+            dormitoryRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -43,17 +49,30 @@ public class DormitoryServiceImpl implements DormitoryService {
     }
 
     @Override
-    public Optional<Iterable<Dormitory>> getAll() {
-        return Optional.of(dormitoryRepository.findAll());
+    public Optional<WashingMachine> update(Long dormitoryId, WashingMachine washingMachine) {
+        Optional<Dormitory> dormitory = dormitoryRepository.findById(dormitoryId);
+        if (dormitory.isPresent() && dormitory.get().removeMachine(washingMachine.getId())) {
+            dormitory.get().addWashingMachine(washingMachine);
+            dormitoryRepository.save(dormitory.get());
+            return Optional.of(washingMachine);
+        }
+        return Optional.empty();
     }
 
     @Override
-    public void addWashingMachine(Long dormitoryId, WashingMachine washingMachine) {
+    public Optional<List<Dormitory>> getAll() {
+        return Optional.of((List<Dormitory>) dormitoryRepository.findAll());
+    }
+
+    @Override
+    public Optional<WashingMachine> addWashingMachine(Long dormitoryId, WashingMachine washingMachine) {
         Optional<Dormitory> optionalDormitory = getById(dormitoryId);
         if (optionalDormitory.isPresent()) {
             Dormitory dormitory = optionalDormitory.get();
             dormitory.addWashingMachine(washingMachine);
             dormitoryRepository.save(dormitory);
+            return Optional.of(washingMachine);
         }
+        return Optional.empty();
     }
 }
