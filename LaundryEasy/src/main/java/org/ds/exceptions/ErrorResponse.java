@@ -1,13 +1,16 @@
 package org.ds.exceptions;
 
-public class Response {
+/**
+ * Представляет сообщения об ошибке.
+ */
+public class ErrorResponse {
 
     private String message;
 
-    public Response() {
+    public ErrorResponse() {
     }
 
-    public Response(String message) {
+    public ErrorResponse(String message) {
         this.message = message;
     }
 
@@ -18,5 +21,4 @@ public class Response {
     public void setMessage(String message) {
         this.message = message;
     }
-
 }

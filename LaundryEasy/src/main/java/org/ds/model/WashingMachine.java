@@ -1,5 +1,9 @@
 package org.ds.model;
 
+/**
+ * Класс стиральной машины, хранит {@link WashingMachine#time время начала последней стирки} в UNIX формате,
+ * {@link WashingMachine#duration длительность последней стирки} в минутах и {@link WashingMachine#state состояние машины}.
+ */
 public class WashingMachine {
     private Long id;
     private Long time;

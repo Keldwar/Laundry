@@ -8,9 +8,12 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 
 /**
- * Реализация DormitoryService
+ * Реализация {@link DormitoryService}
  * <p>
- * Все методы данного класса обращаются к API ландромата
+ * Все методы данного класса обращаются к API ландромата. Во всех методах может возникнуть исключение
+ * {@link org.springframework.web.reactive.function.client.WebClientResponseException} и его подклассы, когда
+ * сервер ландромата отвечает кодом ошибки в диапазоне 400-500. Обработка данного исключения происходит в
+ * {@link org.ds.exceptions.GlobalExceptionHandler глобальном обработчике исключений}.
  */
 @Service
 public class DormitoryServiceImpl implements DormitoryService {

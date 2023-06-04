@@ -5,6 +5,9 @@ import jakarta.validation.constraints.*;
 
 import java.util.List;
 
+/**
+ * Класс общежития, хранит название общежития и стиральные машины, находящиеся в этом общежитии.
+ */
 public class Dormitory {
     private Long id;
     @NotNull

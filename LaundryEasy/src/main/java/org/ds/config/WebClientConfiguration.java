@@ -27,7 +27,6 @@ public class WebClientConfiguration {
                     connection.addHandlerLast(new WriteTimeoutHandler(timeout, TimeUnit.MILLISECONDS));
                 });
 
-        return WebClient.builder().baseUrl(baseUrl)
-                .clientConnector(new ReactorClientHttpConnector(httpClient)).build();
+        return WebClient.builder().baseUrl(baseUrl).clientConnector(new ReactorClientHttpConnector(httpClient)).build();
     }
 }

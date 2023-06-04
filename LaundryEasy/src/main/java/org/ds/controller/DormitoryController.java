@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Контроллер, реализующий работу с общежитием. Позволяет получать, добавлять, удалять, обновлять общежития.
+ */
 @RestController
 public class DormitoryController {
     private final DormitoryServiceImpl dormitoryService;
@@ -41,6 +44,12 @@ public class DormitoryController {
         dormitoryService.delete(dormitoryId);
     }
 
+    /**
+     * Получение всех стиральных машин определённого общежития
+     *
+     * @param dormitoryId идентификатор общежития, у которого нужно получить стиральные машины
+     * @return список стиральных машин
+     */
     @GetMapping("/dormitories/{dormitoryId}/machines")
     public List<WashingMachine> getMachines(@PathVariable Long dormitoryId) {
         return dormitoryService.getById(dormitoryId).getMachines();
