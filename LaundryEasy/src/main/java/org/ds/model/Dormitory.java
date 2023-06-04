@@ -15,6 +15,15 @@ public class Dormitory {
     @NotNull
     private List<WashingMachine> machines;
 
+    public Dormitory() {
+
+    }
+
+    public Dormitory(String name, List<WashingMachine> machines) {
+        this.name = name;
+        this.machines = machines;
+    }
+
     public Long getId() {
         return id;
     }

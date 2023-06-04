@@ -3,7 +3,7 @@ package org.ds.controller;
 import jakarta.validation.Valid;
 import org.ds.model.Dormitory;
 import org.ds.model.WashingMachine;
-import org.ds.service.DormitoryServiceImpl;
+import org.ds.service.DormitoryService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,9 +13,9 @@ import java.util.List;
  */
 @RestController
 public class DormitoryController {
-    private final DormitoryServiceImpl dormitoryService;
+    private final DormitoryService dormitoryService;
 
-    public DormitoryController(DormitoryServiceImpl dormitoryService) {
+    public DormitoryController(DormitoryService dormitoryService) {
         this.dormitoryService = dormitoryService;
     }
 
