@@ -3,7 +3,7 @@ package org.ds.model.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
-import java.util.Date;
+import java.time.Instant;
 
 /**
  * Этот класс представляет запись на стирку на конкретной стиральной машине. Хранит информацию о том, на какую
@@ -28,13 +28,14 @@ public class WashRecord {
     private Integer machineNumber;
 
     @NotNull
-    private Date startTime;
+    private Instant startTime;
     @NotNull
-    private Date endTime;
+    private Instant endTime;
     @NotNull
     private Long duration;
     @ManyToOne
     private User user;
+    private Long dormitoryId;
 
     public WashRecord() {
     }
@@ -55,19 +56,19 @@ public class WashRecord {
         this.machineNumber = machineNumber;
     }
 
-    public Date getStartTime() {
+    public Instant getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Date startTime) {
+    public void setStartTime(Instant startTime) {
         this.startTime = startTime;
     }
 
-    public Date getEndTime() {
+    public Instant getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Date endTime) {
+    public void setEndTime(Instant endTime) {
         this.endTime = endTime;
     }
 
@@ -85,5 +86,13 @@ public class WashRecord {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Long getDormitoryId() {
+        return dormitoryId;
+    }
+
+    public void setDormitoryId(Long dormitoryId) {
+        this.dormitoryId = dormitoryId;
     }
 }

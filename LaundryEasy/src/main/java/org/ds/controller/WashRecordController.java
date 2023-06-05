@@ -20,13 +20,16 @@ public class WashRecordController {
     }
 
     /**
-     * Получение всех записей на стирку.
+     * Получение всех записей на стирку, подходящих под условия.
+     * Условиями могут быть конкретное общежития, период, записи которого нужно получить.
      *
      * @return список всех записей
      */
     @GetMapping("/washRecords")
-    public List<WashRecord> readAll() {
-        return washRecordService.getAll();
+    public List<WashRecord> getAllinDormitory(@RequestParam(value = "dormitoryId", required = false) Long dormitoryId,
+                                              @RequestParam(value = "fromTime", required = false) Long fromTime,
+                                              @RequestParam(value = "toTime", required = false) Long toTime) {
+        return washRecordService.getAllWithConditions(dormitoryId, fromTime, toTime);
     }
 
     /**

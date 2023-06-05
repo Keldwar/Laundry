@@ -33,6 +33,10 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, e.getStatusCode());
     }
 
+    /**
+     * Обработка случаев, когда объект не найден в БД.
+     * Отправляет клиенту сообщение об ошибке.
+     */
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleEntityNotFoundException(EntityNotFoundException e) {
         ErrorResponse errorResponse = new ErrorResponse("Entity not found");

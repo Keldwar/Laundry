@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 /**
  * Реализация {@link WashRecordService}, работает с базой данных.
@@ -39,6 +40,27 @@ public class WashRecordServiceImpl implements WashRecordService {
     @Override
     public WashRecord getById(Long washRecordsId) {
         return washRecordRepository.findById(washRecordsId).orElseThrow(EntityNotFoundException::new);
+    }
+
+    /**
+     * Получение записей на стирку в определённом общежитии из БД.
+     *
+     * @param dormitoryId идентификатор общежития
+     * @return список записей
+     */
+    @Override
+    public List<WashRecord> getAllWithConditions(Long dormitoryId, Long from, Long to) {
+        Stream<WashRecord> washRecordStream = getAll().stream();
+        if (dormitoryId != null) {
+            washRecordStream = washRecordStream
+                    .filter(washRecord -> dormitoryId.equals(washRecord.getDormitoryId()));
+        }
+        if (from != null && to != null) {
+            washRecordStream = washRecordStream
+                    .filter(washRecord -> from <= washRecord.getStartTime().getEpochSecond()
+                            && washRecord.getStartTime().getEpochSecond() <= to);
+        }
+        return washRecordStream.toList();
     }
 
     /**

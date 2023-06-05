@@ -25,6 +25,14 @@ public interface WashRecordService {
     WashRecord getById(Long washRecordsId);
 
     /**
+     * Получение записей на стирку, подходящих под условия.
+     *
+     * @param dormitoryId идентификатор общежития, записи которого нужно получить
+     * @return список записей
+     */
+    List<WashRecord> getAllWithConditions(Long dormitoryId, Long from, Long to);
+
+    /**
      * Добавление новой записи на стирку.
      *
      * @param washRecord запись на стирку
