@@ -16,7 +16,7 @@ public class GlobalExceptionHandler {
      * Отправляет клиенту сообщение об ошибке.
      */
     @ExceptionHandler(WebClientResponseException.class)
-    public ResponseEntity<?> handleWebClientException(WebClientResponseException e) {
+    public ResponseEntity<ErrorResponse> handleWebClientException(WebClientResponseException e) {
         ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
         return new ResponseEntity<>(errorResponse, e.getStatusCode());
     }
@@ -26,7 +26,7 @@ public class GlobalExceptionHandler {
      * Отправляет клиенту сообщение об ошибке.
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<?> handleValidationException(MethodArgumentNotValidException e) {
+    public ResponseEntity<ErrorResponse> handleValidationException(MethodArgumentNotValidException e) {
         ErrorResponse errorResponse = new ErrorResponse("Bad Request");
         return new ResponseEntity<>(errorResponse, e.getStatusCode());
     }
