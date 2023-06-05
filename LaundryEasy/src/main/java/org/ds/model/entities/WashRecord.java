@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.Instant;
+import java.util.Objects;
 
 /**
  * Этот класс представляет запись на стирку на конкретной стиральной машине. Хранит информацию о том, на какую
@@ -38,6 +39,10 @@ public class WashRecord {
     private Long dormitoryId;
 
     public WashRecord() {
+    }
+
+    public WashRecord(Integer machineNumber) {
+        this.machineNumber = machineNumber;
     }
 
     public Long getId() {
@@ -94,5 +99,32 @@ public class WashRecord {
 
     public void setDormitoryId(Long dormitoryId) {
         this.dormitoryId = dormitoryId;
+    }
+
+    public void updateWashRecord(WashRecord other) {
+        this.machineNumber = other.machineNumber;
+        this.startTime = other.startTime;
+        this.endTime = other.endTime;
+        this.duration = other.duration;
+        this.user = other.user;
+        this.dormitoryId = other.dormitoryId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        WashRecord that = (WashRecord) o;
+        return Objects.equals(machineNumber, that.machineNumber)
+                && Objects.equals(startTime, that.startTime)
+                && Objects.equals(endTime, that.endTime)
+                && Objects.equals(duration, that.duration)
+                && Objects.equals(user, that.user)
+                && Objects.equals(dormitoryId, that.dormitoryId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(machineNumber, startTime, endTime, duration, user, dormitoryId);
     }
 }

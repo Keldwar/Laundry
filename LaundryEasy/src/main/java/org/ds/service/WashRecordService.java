@@ -50,8 +50,8 @@ public interface WashRecordService {
     /**
      * Удаление записи на стирку.
      *
-     * @param dormitoryId идентификатор записи, которую нужно удалить
+     * @param washRecordId идентификатор записи, которую нужно удалить
      */
-    void delete(Long dormitoryId);
+    void delete(Long washRecordId);
 }
 

@@ -43,7 +43,7 @@ public class WashRecordServiceImpl implements WashRecordService {
     }
 
     /**
-     * Получение записей на стирку в определённом общежитии из БД.
+     * Получение записей на стирку, подходящих по условия из БД.
      *
      * @param dormitoryId идентификатор общежития
      * @return список записей
@@ -81,15 +81,13 @@ public class WashRecordServiceImpl implements WashRecordService {
      */
     @Override
     public void update(Long washRecordId, WashRecord washRecord) {
+
         Optional<WashRecord> washRecordOptional = washRecordRepository.findById(washRecordId);
         if (washRecordOptional.isPresent()) {
             WashRecord wash = washRecordOptional.get();
-            wash.setDuration(washRecord.getDuration());
-            wash.setEndTime(washRecord.getEndTime());
-            wash.setStartTime(washRecord.getStartTime());
-            wash.setMachineNumber(washRecord.getMachineNumber());
-            wash.setUser(washRecord.getUser());
+            wash.updateWashRecord(washRecord);
             washRecordRepository.save(wash);
+
         } else {
             throw new EntityNotFoundException();
         }
@@ -98,10 +96,14 @@ public class WashRecordServiceImpl implements WashRecordService {
     /**
      * Удаление записи на стирку из БД.
      *
-     * @param dormitoryId идентификатор записи, которую нужно удалить
+     * @param washRecordId идентификатор записи, которую нужно удалить
      */
     @Override
-    public void delete(Long dormitoryId) {
-        washRecordRepository.deleteById(dormitoryId);
+    public void delete(Long washRecordId) {
+        if (washRecordRepository.existsById(washRecordId)) {
+            washRecordRepository.deleteById(washRecordId);
+        } else {
+            throw new EntityNotFoundException();
+        }
     }
 }
