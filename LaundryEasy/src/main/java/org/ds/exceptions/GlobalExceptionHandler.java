@@ -1,5 +1,7 @@
 package org.ds.exceptions;
 
+import jakarta.persistence.EntityNotFoundException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -29,5 +31,15 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleValidationException(MethodArgumentNotValidException e) {
         ErrorResponse errorResponse = new ErrorResponse("Bad Request");
         return new ResponseEntity<>(errorResponse, e.getStatusCode());
+    }
+
+    /**
+     * Обработка случаев, когда объект не найден в БД.
+     * Отправляет клиенту сообщение об ошибке.
+     */
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleEntityNotFoundException(EntityNotFoundException e) {
+        ErrorResponse errorResponse = new ErrorResponse("Entity not found");
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 }
