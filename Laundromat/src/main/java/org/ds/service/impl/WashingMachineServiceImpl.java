@@ -1,9 +1,10 @@
 package org.ds.service.impl;
 
 import org.ds.Generator;
-import org.ds.model.machine.WashingMachine;
+import org.ds.model.entities.WashingMachine;
 import org.ds.repository.WashingMachineRepository;
 import org.ds.service.WashingMachineService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,9 +19,11 @@ public class WashingMachineServiceImpl implements WashingMachineService {
      * Хранилище объектов
      */
     private final WashingMachineRepository washingMachineRepository;
+    private final Generator generator;
 
-    public WashingMachineServiceImpl(WashingMachineRepository washingMachineRepository) {
-        Generator generator = new Generator(washingMachineRepository);
+    @Autowired
+    public WashingMachineServiceImpl(WashingMachineRepository washingMachineRepository, Generator generator) {
+        this.generator = generator;
         generator.run();
         this.washingMachineRepository = washingMachineRepository;
     }
@@ -41,17 +44,17 @@ public class WashingMachineServiceImpl implements WashingMachineService {
     }
 
     @Override
-    public Optional<WashingMachine> update(WashingMachine washingMachine) {
-        Optional<WashingMachine> machine = washingMachineRepository.findById(washingMachine.getId());
-        if (machine.isPresent()) {
-            washingMachineRepository.deleteById(washingMachine.getId());
-            return Optional.of(washingMachineRepository.save(washingMachine));
-        }
-        return Optional.empty();
+    public void update(WashingMachine washingMachine) {
+        Optional<WashingMachine> desiredMachine = washingMachineRepository.findById(washingMachine.getId());
+        desiredMachine.ifPresent(machine -> washingMachineRepository.save(washingMachine));
     }
 
     @Override
-    public Optional<List<WashingMachine>> getAll() {
-        return Optional.of((List<WashingMachine>) washingMachineRepository.findAll());
+    public List<WashingMachine> getAll() {
+        List<WashingMachine> list = (List<WashingMachine>) washingMachineRepository.findAll();
+        if (list.isEmpty()) {
+            return List.of();
+        }
+        return list;
     }
 }

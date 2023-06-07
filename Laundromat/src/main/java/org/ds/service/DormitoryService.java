@@ -1,26 +1,27 @@
 package org.ds.service;
 
-import org.ds.model.Dormitory;
-import org.ds.model.machine.WashingMachine;
+import org.ds.model.entities.Dormitory;
+import org.ds.model.entities.WashingMachine;
 
 import java.util.List;
 import java.util.Optional;
 
 /**
- * Интерфейс сервиса для работы с объектами Dormitory
+ * Интерфейс сервиса для работы с объектами Общежитие
  */
 public interface DormitoryService {
     /**
-     * Добавление нового объекта Dormitory в базу
+     * Добавление нового объекта Общежитие в базу
      *
-     * @param dormitory - Общежитие
-     * @return объект Общежитие
+     * @param dormitory Общежитие
+     * @return добавленный объект Общежитие
      */
     Optional<Dormitory> addDormitory(Dormitory dormitory);
+
     /**
      * Удаление объекта Общежитие
      *
-     * @param id - идентификатор
+     * @param id идентификатор
      * @return удалось удалить объект или нет
      */
     boolean delete(Long id);
@@ -28,7 +29,7 @@ public interface DormitoryService {
     /**
      * Возвращает объект по идентификатору
      *
-     * @param id - идентификатор
+     * @param id идентификатор
      * @return объект Общежитие
      */
     Optional<Dormitory> getById(Long id);
@@ -36,30 +37,21 @@ public interface DormitoryService {
     /**
      * Обновляет данные в базе
      *
-     * @param dormitory - объект
-     * @return объект Общежитие
+     * @param dormitory объект Общежитие
      */
-    Optional<Dormitory> update(Dormitory dormitory);
-
-    /**
-     * Обновление данных Стиральной машины
-     * @param dormitoryId - идентификатор Общежития
-     * @param washingMachine - объект Стиральной машины
-     * @return Стиральную машину, которую обновили
-     */
-    Optional<WashingMachine> update(Long dormitoryId, WashingMachine washingMachine);
+    void update(Dormitory dormitory);
 
     /**
      * @return возвращает все общежития
      */
-    Optional<List<Dormitory>> getAll();
+    List<Dormitory> getAll();
 
     /**
-     * Добавляет объект машины в базу данных
+     * Добавляет объект стиральной машины в базу данных
      *
-     * @param dormitoryId    - идентификатор общаги
-     * @param washingMachine - объект стиральной машины
-     * @return машину, которую добавили
+     * @param dormitoryId    идентификатор общежития
+     * @param washingMachine объект стиральной машины
+     * @return true - при успешном добавление, false - иначе
      */
-    Optional<WashingMachine> addWashingMachine(Long dormitoryId, WashingMachine washingMachine);
+    boolean addWashingMachine(Long dormitoryId, WashingMachine washingMachine);
 }

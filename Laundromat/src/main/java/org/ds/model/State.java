@@ -1,4 +1,4 @@
-package org.ds.model.machine;
+package org.ds.model;
 
 /**
  * Состояние машинки: свободна, занята, сломана
