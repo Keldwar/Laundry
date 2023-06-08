@@ -9,6 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -68,6 +69,65 @@ class WashRecordServiceImplTest {
         when(washRecordRepository.findById(ID)).thenReturn(Optional.empty());
 
         assertThrows(EntityNotFoundException.class, () -> washRecordService.getById(ID));
+    }
+
+    /**
+     * Тестирование получения всех записей, если переданные аргументы null.
+     */
+    @Test
+    void getAllWithConditions_ifAllArgumentsIsNull() {
+        WashRecord washRecord1 = new WashRecord(1);
+        washRecord1.setDormitoryId(1L);
+        WashRecord washRecord2 = new WashRecord(2);
+        washRecord1.setDormitoryId(2L);
+        List<WashRecord> washRecords = List.of(washRecord1, washRecord2);
+        when(washRecordRepository.findAll()).thenReturn(washRecords);
+
+        List<WashRecord> actual = washRecordService.getAllWithConditions(null, null, null);
+
+        assertEquals(washRecords, actual);
+    }
+
+    /**
+     * Тестирование получения записей, отфильтрованных по общежитию, когда указано общежитие, но не указан период.
+     */
+    @Test
+    void getAllWithConditions_ifDormitoryIdIsNotNull() {
+        WashRecord washRecord1 = new WashRecord(1);
+        washRecord1.setDormitoryId(1L);
+        WashRecord washRecord2 = new WashRecord(2);
+        washRecord2.setDormitoryId(2L);
+        List<WashRecord> washRecords = List.of(washRecord1, washRecord2);
+        when(washRecordRepository.findAll()).thenReturn(washRecords);
+
+        List<WashRecord> actual = washRecordService.getAllWithConditions(1L, null, null);
+
+        assertEquals(List.of(washRecord1), actual);
+    }
+
+    /**
+     * Тестирование получения записей, отфильтрованных по общежитию и периоду.
+     */
+    @Test
+    void getAllWithConditions_ifAllArgumentsNotNull() {
+        WashRecord washRecord1 = new WashRecord(1);
+        washRecord1.setDormitoryId(1L);
+        washRecord1.setStartTime(Instant.ofEpochSecond(1600L));
+
+        WashRecord washRecord2 = new WashRecord(2);
+        washRecord2.setDormitoryId(2L);
+        washRecord2.setStartTime(Instant.ofEpochSecond(3000L));
+
+        WashRecord washRecord3 = new WashRecord(2);
+        washRecord3.setDormitoryId(2L);
+        washRecord3.setStartTime(Instant.ofEpochSecond(5000L));
+
+        List<WashRecord> washRecords = List.of(washRecord1, washRecord2, washRecord3);
+        when(washRecordRepository.findAll()).thenReturn(washRecords);
+
+        List<WashRecord> actual = washRecordService.getAllWithConditions(2L, 2000L, 4000L);
+
+        assertEquals(List.of(washRecord2), actual);
     }
 
     /**
